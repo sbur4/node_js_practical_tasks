@@ -1,0 +1,20 @@
+{
+  "name": "node_js_practical_tasks",
+  "version": "1.0.0",
+  "description": "EPAM NodeJs practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbur4/node_js_practical_tasks.git"
+  },
+  "keywords": [],
+  "author": "serhii_burch@epam.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
+  }
+}
+
