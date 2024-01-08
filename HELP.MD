@@ -29,3 +29,7 @@ nvm install --lts
 
 // install latest stable version of node
 nvm install stable
+
+npm uninstall node-fetch
+
+npm i --save csvtojson
