@@ -2,9 +2,10 @@
   "name": "node_js_practical_tasks",
   "version": "1.0.0",
   "description": "EPAM NodeJs practice",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "practice_task_node": "node src/index",
+    "practice_task_nodemon": "nodemon index"
   },
   "repository": {
     "type": "git",
@@ -15,6 +16,8 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
-
