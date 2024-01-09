@@ -29,3 +29,11 @@ nvm install --lts
 
 // install latest stable version of node
 nvm install stable
+
+npm install --save-dev jest
+
+npm install --save-dev mocha
+
+npm install --save-dev ts-jest @types/jest
+
+npm install axios
