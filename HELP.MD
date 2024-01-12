@@ -29,3 +29,8 @@ nvm install --lts
 
 // install latest stable version of node
 nvm install stable
+
+// http://localhost:3000/users
+
+docs:
+https://nodejs.org/docs/latest/api/

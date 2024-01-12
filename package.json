@@ -4,7 +4,7 @@
   "description": "EPAM NodeJs practice",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "node src/web/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,8 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
-
