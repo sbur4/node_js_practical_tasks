@@ -29,3 +29,14 @@ nvm install --lts
 
 // install latest stable version of node
 nvm install stable
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+npm i typescript
+npm i ts-node
+npm i @types/express
+npm i @types/node
+npm i @types/uuid
+npm i express
+npm i joi
+npm i uuid

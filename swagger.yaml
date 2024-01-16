@@ -1,0 +1,694 @@
+openapi: 3.0.3
+info:
+  title: Node.js GMP Express application
+  version: 1.0.0
+tags:
+  - name: cart
+  - name: product
+  - name: auth
+paths:
+  /api/profile/cart:
+    get:
+      tags:
+        - cart
+      summary: Get user cart or create if it is missing
+      parameters:
+        - in: header
+          name: x-user-id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: User id (uuid)
+          example: 'eb5a26af-6e4c-4f31-a9b1-3450d42ac66c'
+      responses:
+        '200':
+          description: Returns user cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data:
+                  cart:
+                    id: eb5a26af-6e4c-4f31-a9b1-3450d42ac66c
+                    items:
+                      - product:
+                          id: 891389f0-4312-42d6-a650-6fda0959c734
+                          title: Book
+                          description: Interesting book
+                          price: 200
+                        count: 2
+                  total: 400
+                error: null
+        '403':
+          description: Forbidden (when authorization header is missing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: You must be authorized user
+        '401':
+          description: Unauthorized (when no user matching authorization header is found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: User is not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+    put:
+      tags:
+        - cart
+      summary: Update user cart
+      parameters:
+        - in: header
+          name: x-user-id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: User id (uuid)
+          example: 'eb5a26af-6e4c-4f31-a9b1-3450d42ac66c'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCartRequestBody'
+      responses:
+        '200':
+          description: Cart can be updated in the following ways - 1) products can be added 2) products can be dropped 3) amount of product might have changed. Request body to be provided contains a snapshot of cart after changes. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data:
+                  cart:
+                    id: eb5a26af-6e4c-4f31-a9b1-3450d42ac66c
+                    items:
+                      - product:
+                          id: 891389f0-4312-42d6-a650-6fda0959c734
+                          title: Book
+                          description: Interesting book
+                          price: 200
+                        count: 2
+                  total: 400
+                error: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: Products are not valid
+        '403':
+          description: Forbidden (when authorization header is missing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: You must be authorized user
+        '401':
+          description: Unauthorized (when no user matching authorization header is found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: User is not authorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: Cart was not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+    delete:
+      tags:
+        - cart
+      summary: Empty user cart
+      parameters:
+        - in: header
+          name: x-user-id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: User id (uuid)
+          example: 'eb5a26af-6e4c-4f31-a9b1-3450d42ac66c'
+      responses:
+        '200':
+          description: Returns success = true if cart was successfully emptied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptySuccessResponse'
+              example:
+                data:
+                  success: true
+                error: null
+        '403':
+          description: Forbidden (when authorization header is missing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: You must be authorized user
+        '401':
+          description: Unauthorized (when no user matching authorization header is found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: User is not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+  /api/profile/cart/checkout:
+    post:
+      tags:
+        - cart
+      summary: Create an order
+      parameters:
+        - in: header
+          name: x-user-id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: User id (uuid)
+          example: 'eb5a26af-6e4c-4f31-a9b1-3450d42ac66c'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+              example:
+                data:
+                  order:
+                    id: 6c36d6fa-f694-4f9c-9b2c-6f7049d38f4a
+                    userId: 6dc52b3c-de7e-431a-84b8-0ec56e0774d4
+                    cartId: cadff0c5-0079-4db8-b6bf-84c9c2633ca3
+                    items:
+                      - product:
+                          id: 5c293ad0-19d0-41ee-baa3-4c648f9f7697
+                          title: Book
+                          description: Interesting book
+                          price: 200
+                        count: 2
+                      - product:
+                          id: afdd68c4-d359-45e6-b9fd-c8fdb2a162a0
+                          title: Pen
+                          description: Cute pen
+                          price: 20
+                        count: 5
+                    payment:
+                      type: paypal
+                      address: London
+                      creditCard: 1234-1234-1234-1234
+                    delivery:
+                      type: post
+                      address: London
+                    comments: ''
+                    status: created
+                    total: 500
+                error: null
+        '403':
+          description: Forbidden (when authorization header is missing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: You must be authorized user
+        '401':
+          description: Unauthorized (when no user matching authorization header is found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: User is not authorized
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: Cart is empty
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+  /api/products:
+    get:
+      tags:
+        - product
+      summary: Returns a list of products
+      parameters:
+        - in: header
+          name: x-user-id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: User id (uuid)
+          example: 'eb5a26af-6e4c-4f31-a9b1-3450d42ac66c'
+      responses:
+        '200':
+          description: Returns a list of all products available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductsResponse'
+              example:
+                data:
+                  - id: 5c293ad0-19d0-41ee-baa3-4c648f9f7697
+                    title: Book
+                    description: Interesting book
+                    price: 200
+                  - id: afdd68c4-d359-45e6-b9fd-c8fdb2a162a0
+                    title: Pen
+                    description: Cute pen
+                    price: 20
+                error: null
+        '403':
+          description: Forbidden (when authorization header is missing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: You must be authorized user
+        '401':
+          description: Unauthorized (when no user matching authorization header is found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: User is not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+  /api/products/{productId}:
+    get:
+      tags:
+        - product
+      summary: Returns single product
+      parameters:
+        - name: productId
+          in: path
+          description: Id (uuid) of product to return
+          required: true
+          schema:
+            type: number
+        - in: header
+          name: x-user-id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: User id (uuid)
+          example: 'eb5a26af-6e4c-4f31-a9b1-3450d42ac66c'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+              example:
+                data:
+                  id: 5c293ad0-19d0-41ee-baa3-4c648f9f7697
+                  title: Book
+                  description: Interesting book
+                  price: 200
+                error: null
+        '403':
+          description: Forbidden (when authorization header is missing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: You must be authorized user
+        '401':
+          description: Unauthorized (when no user matching authorization header is found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: User is not authorized
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: No product with such id
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+  /api/auth/register:
+    post:
+      tags:
+        - auth
+      summary: Create new user (for Module 9)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequestBody'
+      responses:
+        '200':
+          description: Returns new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+              example:
+                data:
+                  id: eb5a26af-6e4c-4f31-a9b1-3450d42ac66c
+                  email: ann.jones@epam.com
+                  role: admin
+                error: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                data: null
+                error:
+                  message: Email is not valid
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+  /api/auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login user (for Module 9)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "ann.jones@epam.com"
+                password:
+                  type: string
+                  example: "DDQldls?kdpw0fk"
+      responses:
+        '200':
+          description: Returns new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUserResponse'
+              example:
+                data:
+                  token: VugRyl8SX88-LOZhvJxupjfWX=rATjop1kFw/NcshAQ4QdX0moMh9w9pVtL4rowLVoVpjpYBSKBUJsfqjnjnr-ImD/XAWJUdXIFfy3!7ViC/pxSP5zNefrgMAt2=?3=iv7Gga=zjphHqog6Jdy?AliWwYROxe4AUzQAxM!Nc=Hxax-0hJRJ!ijgE-=6RFis!cuHXxpJBA=EpoTYmla247q6rrm1RA!WLq3rJOX1itwD-LGb8hdGVXwGFgxy9QNJ/
+                error: null
+        '404':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                data: null
+                error:
+                  message: No user with such email or password
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                data: null
+                error:
+                  message: 'Internal Server error'
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Cart id (uuid)
+          example: dd5ec5ab-deaa-419c-8a6b-7e67b1f7ec87
+        items:
+          type: array
+          description: Items added to cart
+          items:
+            $ref: '#/components/schemas/CartItem'
+    CartItem:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        count:
+          type: number
+          description: Total count of specific products
+          example: 2
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Product id (uuid)
+          example: 5c293ad0-19d0-41ee-baa3-4c648f9f7697
+        title:
+          type: string
+          description: Product name
+          example: Book
+        description:
+          type: string
+          description: Product description
+          example: Interesting book
+        price:
+          type: number
+          description: Product price
+          example: 200
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        cartId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        payment:
+          type: object
+          properties:
+            type:
+              type: string
+            address:
+              type: string
+            creditCard:
+              type: string
+        delivery:
+          type: object
+          properties:
+            type:
+              type: string
+            address:
+              type: string
+        comments:
+          type: string
+        status:
+          type: string
+        total:
+          type: number
+    CartResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            cart:
+              $ref: '#/components/schemas/Cart'
+            total:
+              type: number
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    CheckoutResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            order:
+              $ref: '#/components/schemas/Order'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    ProductResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Product'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    ProductsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    UpdateCartRequestBody:
+      type: object
+      properties:
+        productId:
+          type: string
+          example: "915b2f40-9fd9-47f2-9b51-628f3dc69aac"
+        count:
+          type: number
+          example: 5
+    CreateUserRequestBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "ann.jones@epam.com"
+        password:
+          type: string
+          example: "DDQldls?kdpw0fk"
+        role:
+          type: string
+          enum: [admin, user]
+          example: "admin"
+    CreateUserResponse:
+      allOf:
+        - $ref: '#/components/schemas/CreateUserRequestBody'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: "fdbbb574-266b-4b2e-ad2d-790bcf4765c2"
+    LoginUserResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "VugRyl8SX88-LOZhvJxupjfWX=rATjop1kFw/NcshAQ4QdX0moMh9w9pVtL4rowLVoVpjpYBSKBUJsfqjnjnr-ImD/XAWJUdXIFfy3!7ViC/pxSP5zNefrgMAt2=?3=iv7Gga=zjphHqog6Jdy?AliWwYROxe4AUzQAxM!Nc=Hxax-0hJRJ!ijgE-=6RFis!cuHXxpJBA=EpoTYmla247q6rrm1RA!WLq3rJOX1itwD-LGb8hdGVXwGFgxy9QNJ/"
+    EmptySuccessResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    ErrorResponse:
+      type: object
+      nullable: true
+      properties:
+        message:
+          type: string
