@@ -40,3 +40,17 @@ npm i @types/uuid
 npm i express
 npm i joi
 npm i uuid
+
+install docker for desktop
+install postgre (with pg admin) for desktop
+
+open in terminal folder and run docker-compose up -d
+npm install pg
+
+npm i mikro-orm
+npm i @mikro-orm/cli
+npm i @mikro-orm/core
+npm i @mikro-orm/migrations
+npm i @mikro-orm/postgresql
+npm i sequelize
+npm i dotenv
