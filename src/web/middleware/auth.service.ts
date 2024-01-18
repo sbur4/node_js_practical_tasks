@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response} from 'express';
 
-import {isUserExist} from "../../core/service/user.service";
 import {SERVER_ERROR_RESPONSE} from "../../core/util/response.util";
+import {isUserExist} from "../../core/service/user.service";
 
 export const authenticationCheck: RequestHandler = (
     req: Request,

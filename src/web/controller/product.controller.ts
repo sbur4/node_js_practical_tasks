@@ -1,12 +1,12 @@
 import {Request, Response} from 'express';
 
-import {findAllProducts, findProductById} from "../../core/service/product.service";
 import {SERVER_ERROR_RESPONSE} from "../../core/util/response.util";
+import {findAllProducts, findProductById} from "../../core/service/product.service";
 
 class ProductController {
     public async getAllProducts(req: Request, res: Response): Promise<void> {
         try {
-            const products = findAllProducts();
+            const products =findAllProducts();
             console.log('Products was found');
 
             res.status(200).json({

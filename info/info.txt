@@ -1,0 +1,6 @@
+When pgadmin is installed:
+1.Add new user as admin;
+2.Set 'Privileges';
+3.Register-> Server;
+4.Type name 'PostgreSQL 12';
+5.Fill as in 'docker-connection-f884de0cef39afdf385f4b8f731ec75a.png' file.

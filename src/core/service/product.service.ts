@@ -1,9 +1,9 @@
-import {findAll, findById} from "../../data/repository/product.repository";
+import {DI} from "../../web/demo.app";
 
 export function findAllProducts() {
-    return findAll();
+    return DI.productRepository.findAll();
 }
 
 export function findProductById(id: string) {
-    return findById(id);
+    return DI.productRepository.findProductById(id);
 }
