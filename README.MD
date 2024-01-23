@@ -19,16 +19,11 @@ We are going to create an Express application for online shop which sells differ
 
 ### Note: TypeScript should be used.
 
-1. API is implemented based on ***swagger.yaml***. Proper ***HTTP status codes*** are returned in responses (not only 200 or 500).
-2. Application is implemented following Three Layered Architecture. Layers are separated by file names. For example ``xxx.repository.ts`` contains functions to retrieve data (data access layer), xxx.service.ts contains services that implement business logic, ``xxx.controller.ts`` contains functions that manage status codes/responses returned (presentation layer).
-3. Data is stored either in memory or on file system.
-   ***joi*** is used to validate data in ``PUT`` ``/api/profile/cart``.
-4. Simple authentication middleware is added to check if user with such id exists. User id is passed in ``x-user-id`` header.
-5. Order entity has copy of products. If you have only product id in order, it may lead to inconsistency. For example, if user creates an order and after that price is changed, the order price shouldn't be changed.
-
-### Additional (optional) tasks:
-
-1. For ``DELETE`` ``/api/profile/cart`` soft-delete approach is be used. Make sure that client of your API will not know that soft-delete approach is used.
+1. Data is stored in MongoDB database. **Docker image** is used for local development (check **Running MongoDB as a Docker Container** for an example of docker-compose file).
+2. **Mongoose** is used as ODM for querying.
+3. Data Access Layer is rewritten to query MongoDB.
+4. Models are created based on entity **schemas** used in Express and Layered Architecture module.
+5. Models have proper relations between each other based on information specified above.
 
 ## Evaluation criteria
 

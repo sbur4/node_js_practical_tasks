@@ -40,3 +40,5 @@ npm i @types/uuid
 npm i express
 npm i joi
 npm i uuid
+
+npm i mongoose
