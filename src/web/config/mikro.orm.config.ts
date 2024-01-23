@@ -1,7 +1,8 @@
 import * as dotenv from 'dotenv';
-
 import {Options} from '@mikro-orm/core';
-import {PostgreSqlDriver} from "@mikro-orm/postgresql";
+import {PostgreSqlDriver} from '@mikro-orm/postgresql';
+import {TsMorphMetadataProvider} from '@mikro-orm/reflection';
+import {Migrator} from '@mikro-orm/migrations';
 
 dotenv.config();
 
@@ -15,9 +16,16 @@ const options: Options<PostgreSqlDriver> = {
     entities: ['./dist/src/data/entity'], // path to your JS entities (dist), relative to `baseDir`
     entitiesTs: ['./src/data/entity'], // path to our TS entities (src), relative to `baseDir`
     migrations: {
-        path: './dist/migrations', // path to the folder with migrations
+        path: './dist/src/data/migrations', // path to the folder with migrations
         pathTs: './src/data/migrations', // path to the folder with TS migrations (if used, we should put path to compiled files in `path`)
-    }
+        transactional: true
+    },
+
+    metadataProvider: TsMorphMetadataProvider,
+    extensions: [Migrator], // to execute "dev:migration:up": "npx mikro-orm migration:up --only 20240117192305"...
+    allowGlobalContext: true, // for the test.storage
+    debug: true,
+    logger: console.log.bind(console)
 };
 
 export default options;

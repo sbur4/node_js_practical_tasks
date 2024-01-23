@@ -1,7 +1,6 @@
-import {Product} from "./product.";
+import {CartEntity} from "../../data/entity/cart.entity";
 
 export interface CartItemsDto {
-    id: string; // uuid
-    items: Product[];
+    cart: CartEntity;
     total: number;
 }

@@ -52,8 +52,12 @@ npm i @mikro-orm/cli
 npm i @mikro-orm/core
 npm i @mikro-orm/migrations
 npm i @mikro-orm/postgresql
-npm i sequelize
+npm i sequelize /-----
 npm i dotenv
 
 npm i yarn
 yarn add @mikro-orm/core @mikro-orm/postgresql @mikro-orm/migrations @mikro-orm/cli dotenv //-----
+
+npx tsc --init
+
+npm i @mikro-orm/reflection

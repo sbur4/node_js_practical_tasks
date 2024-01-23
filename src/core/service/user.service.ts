@@ -1,7 +1,11 @@
 import {DI} from "../../web/demo.app";
-import {UserRepository} from "../../data/repository/user.repository";
+import {UserEntity} from "../../data/entity/user.entity";
 
-export async function isUserExist(userId: string): Promise<boolean> {
-    return await DI.userRepository.isUserExistById(userId);
-    // return await UserRepository.isUserExistById(userId);
+export async function findUserById(id: string): Promise<UserEntity | null> {
+    return await DI.userRepository.findOne({id: id});
+}
+
+export async function isUserExist(id: string): Promise<boolean> {
+    const user = await DI.userRepository.findOne({id: id});
+    return !(user === null || undefined);
 }

@@ -1,9 +1,10 @@
 import {DI} from "../../web/demo.app";
+import {ProductEntity} from "../../data/entity/product.entity";
 
-export function findAllProducts() {
-    return DI.productRepository.findAll();
+export async function findAllProducts() {
+    return await DI.productRepository.findAll();
 }
 
-export function findProductById(id: string) {
-    return DI.productRepository.findProductById(id);
+export async function findProductById(id: string): Promise<ProductEntity | null> {
+    return await DI.productRepository.findOne({id: id});
 }

@@ -1,31 +1,36 @@
 import {NextFunction, Request, RequestHandler, Response} from 'express';
 
-import {SERVER_ERROR_RESPONSE} from "../../core/util/response.util";
+import {SERVER_ERROR_RESPONSE, USER_ID_HEADER} from "../../core/util/response.util";
 import {isUserExist} from "../../core/service/user.service";
 
-export const authenticationCheck: RequestHandler = (
+export const authenticationCheck: RequestHandler = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     {
         try {
-            const userId = req.header('x-user-id');
+            const userId = req.header(USER_ID_HEADER);
 
             if (!userId) {
                 console.log(`You must be authorized user`);
                 return res.status(403).json({data: null, error: {message: 'You must be authorized user'}});
             }
 
-            if (!isUserExist(userId)) {
-                console.log(`User is not authorized ${userId}`);
+            const user = await isUserExist(userId);
+
+            if (!user) {
+                console.log(`User is not authorized by id:${userId}`);
                 return res.status(401).json({
                     data: null, error: {message: 'User is not authorized'}
                 });
             }
 
+            console.log(`User is authorized by id:${userId}`);
             doNext(userId);
-        } catch (error) {
+
+        } catch
+            (error) {
             console.error(error);
             res.status(500).json(SERVER_ERROR_RESPONSE);
         }

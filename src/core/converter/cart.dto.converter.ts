@@ -1,22 +1,17 @@
-// import {CartEntity, CartItemEntity} from "../../data/entity/cart.entity";
-// import {CartItemsDto} from "../dto/car.items.dto";
-// import {Product} from "../dto/product.";
-//
-// export function createCartItemsDto(cart: CartEntity): CartItemsDto {
-//     const items: Product[] = cart.items.map(cartItem => ({
-//         product: cartItem.product,
-//         count: cartItem.count,
-//     }));
-//
-//     const total = calculateTotal(cart.items);
-//
-//     return {
-//         id: cart.id,
-//         items,
-//         total,
-//     };
-// }
-//
-// export function calculateTotal(cartItems: CartItemEntity[]): number {
-//     return cartItems.reduce((sum, cartItem) => sum + cartItem.product.price * cartItem.count, 0);
-// }
+import {Collection} from '@mikro-orm/core';
+
+import {CartItemsDto} from "../dto/car.items.dto";
+import {CartEntity} from "../../data/entity/cart.entity";
+import {CartItemEntity} from "../../data/entity/cartItem.entity";
+
+export function createCartItemsDto(cart: CartEntity): CartItemsDto {
+    const totalSum: number = calculateTotalSum(cart.products);
+
+    return {
+        cart: cart, total: totalSum!,
+    };
+}
+
+export function calculateTotalSum(items: Collection<CartItemEntity>) {
+    return items.reduce((sum, item) => sum + item.count * item.product.price, 0);
+}
