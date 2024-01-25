@@ -2,11 +2,12 @@ import {Request, Response} from 'express';
 
 import {findAllProducts, findProductById} from "../../core/service/product.service";
 import {SERVER_ERROR_RESPONSE} from "../../core/util/response.util";
+import {idValidator} from "../../core/validator/id.validator";
 
 class ProductController {
     public async getAllProducts(req: Request, res: Response): Promise<void> {
         try {
-            const products = findAllProducts();
+            const products = await findAllProducts();
             console.log('Products was found');
 
             res.status(200).json({
@@ -20,15 +21,23 @@ class ProductController {
         }
     }
 
-    public async getProductById(req: Request, res: Response) {
+    public async getProductById(req: Request, res: Response): Promise<void> {
         try {
             const productId = req.params.id;
 
-            const product = findProductById(productId);
-            console.log(`Products was found by product id:${productId}`);
+            if (idValidator(productId)) {
+                res.status(400).json({
+                    data: null,
+                    error: `Invalid product id:${productId}!`
+                });
+                return;
+            }
+
+            const product = await findProductById(productId);
+            console.log(`Product was found by id:${productId}`);
 
             if (!product) {
-                console.log(`Products can't find by product id:${productId}`);
+                console.log(`Product can't find by id:${productId}`);
                 res.status(404).json({
                     data: null,
                     error: {
@@ -51,3 +60,5 @@ class ProductController {
 }
 
 export default new ProductController();
+
+// todo +

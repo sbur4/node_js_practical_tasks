@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 
 import ProductController from "../controller/product.controller";
 
@@ -10,3 +10,5 @@ productRouter.get('/:id', ProductController.getProductById);
 export const PRODUCT_URL = '/api/products';
 
 export default productRouter;
+
+// todo +

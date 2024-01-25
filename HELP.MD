@@ -41,4 +41,6 @@ npm i express
 npm i joi
 npm i uuid
 
+install mongodb driver
 npm i mongoose
+npm i @types/mongoose

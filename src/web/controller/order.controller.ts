@@ -1,15 +1,25 @@
 import {Request, Response} from 'express';
 
-import {createOrder, isEmptyCart} from "../../core/service/order.service";
 import {SERVER_ERROR_RESPONSE, USER_ID_HEADER} from "../../core/util/response.util";
+import {findCartByUserId} from "../../core/service/cart.service";
+import {createOrder} from "../../core/service/order.service";
 
 class OrderController {
-    public makeOrder(req: Request, res: Response): void {
+    public async makeOrder(req: Request, res: Response): Promise<void> {
         try {
             const userId = req.header(USER_ID_HEADER);
 
-            const isEmpty = isEmptyCart(userId!);
-            if (isEmpty!) {
+            const cart = await findCartByUserId(userId!);
+            if (!cart) {
+                res.status(400).json({
+                    data: null,
+                    error: 'Cart is not exist'
+                });
+                console.log(`Cart is not exist for user id:${userId}`);
+                return;
+            }
+
+            if (cart.items.length === 0) {
                 res.status(400).json({
                     data: null,
                     error: 'Cart is empty'
@@ -18,7 +28,7 @@ class OrderController {
                 return;
             }
 
-            const order = createOrder(userId!);
+            const order = await createOrder(cart);
             console.log(`Order was made by user id:${userId}`);
 
             res.status(201).json({

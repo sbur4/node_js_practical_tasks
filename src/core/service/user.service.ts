@@ -1,5 +1,13 @@
-import {isUserExistById} from "../../data/repository/user.repository"
+import {IUserEntity, UserEntity} from "../../data/entity/user.entity";
+import UserFindByIdException from "../exception/user.find.by.id.exception";
 
-export function isUserExist(userId: string): boolean {
-    return isUserExistById(userId);
+export async function findUserById(id: string): Promise<IUserEntity | null> {
+    try {
+        return await UserEntity.findById(id);
+    } catch (error) {
+        console.error(`User not found by id:${id} `, error);
+        throw new UserFindByIdException(id);
+    }
 }
+
+// todo +

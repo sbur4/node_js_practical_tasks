@@ -1,37 +1,51 @@
-import Joi from 'joi';
+import {model, Schema} from 'mongoose';
 
-import {ProductEntity} from "./product.entity";
+import {IUserEntity} from "./user.entity";
+import {IProductEntity} from "./product.entity";
 
-export interface CartEntity {
-    id: string; // uuid
-    userId: string;
-    isDeleted: boolean;
-    items: CartItemEntity[];
-}
-
-export interface CartItemEntity {
-    product: ProductEntity;
+export interface ICartItemEntity {
+    product: IProductEntity;
     count: number;
 }
 
-export interface CartUpdateEntity {
-    productId: string;
-    count: number;
-}
+export type TCartItems = ICartItemEntity[];
 
-export const cartItemSchema = Joi.object({
-    productId: Joi.string().required(),
-    count: Joi.number().required()
+export const cartItemSchema = new Schema<ICartItemEntity>({
+    product: {type: Schema.Types.ObjectId, ref: 'Product'},
+    count: Schema.Types.Number
 })
 
-// const cartItem: CartItemEntity = {
-//     product: bookProduct,
-//     count: 2,
-// }
-//
-// export const cart: CartEntity = {
-//     id: '1434fec6-cd85-420d-95c0-eee2301a971d',
-//     userId: '0fe36d16-49bc-4aab-a227-f84df899a6cb',
-//     isDeleted: false,
-//     items: [cartItem],
-// }
+cartItemSchema.methods.toJSON = function () {
+    return {
+        id: this._id,
+        product: this.product,
+        count: this.count
+    }
+}
+
+export interface ICartEntity {
+    id: string;
+    user: IUserEntity;
+    isDeleted: boolean;
+    items: TCartItems;
+}
+
+const cartSchema = new Schema<ICartEntity>({
+    user: {type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true},
+    isDeleted: {type: Schema.Types.Boolean, default: false},
+    items: [cartItemSchema]
+}, {
+    versionKey: false
+});
+
+
+cartSchema.methods.toJSON = function () {
+    return {
+        id: this._id,
+        user: this.user,
+        isDeleted: this.isDeleted,
+        items: this.items
+    }
+}
+
+export const CartEntity = model('Cart', cartSchema);

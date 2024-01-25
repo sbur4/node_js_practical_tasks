@@ -1,7 +1,9 @@
 import {Product} from "./product.";
 
 export interface CartItemsDto {
-    id: string; // uuid
+    id: string;
     items: Product[];
     total: number;
 }
+
+// todo +
