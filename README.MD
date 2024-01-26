@@ -1,4 +1,6 @@
-# Practical task
+# Practical task 2
+
+![](./example-63ec3c33b97c75f1230aba4a4ba1e446.gif)
 
 Let's write our simplified version of the `top` CLI utility program. It provides a dynamic real-time view of the running system. Usually, this command shows the summary information of the system and the list of processes or threads currently managed by the *nix kernel. Our goal is to show the most CPU-intensive process that's running on the system.
 
