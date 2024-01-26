@@ -15,5 +15,4 @@ class RandomNumberService {
     }
 }
 
-module
-    .exports = RandomNumberService;
+module.exports = RandomNumberService;

@@ -1,7 +1,7 @@
 {
   "name": "node_js_practical_tasks",
   "version": "1.0.0",
-  "description": "EPAM NodeJs practice",
+  "description": "EPAM NodeJs practice. Task 1",
   "main": "src/index.js",
   "scripts": {
     "practice_task_node": "node src/index",
@@ -11,13 +11,22 @@
     "type": "git",
     "url": "git+https://github.com/sbur4/node_js_practical_tasks.git"
   },
-  "keywords": [],
+  "keywords": [
+    "js",
+    "nodejs",
+    "ts",
+    "nodemon"
+  ],
   "author": "serhii_burch@epam.com",
+  "website": "https://github.com/sbur4",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
-  }
+  },
+  "files": [
+    "/src/**"
+  ]
 }

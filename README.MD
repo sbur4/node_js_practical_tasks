@@ -1,21 +1,27 @@
-# Practical task
+# Practical task 1
 
-In this introduction part of Node.js program, you will need to become familiar with Node.js, install NPM, and be able to manage multiple versions of Node.js. This typically involves downloading the Node.js installer from the official website and running it to complete the installation. After that Node.js and NPM could be used to create and run applications, manage dependencies and switch between different versions of Node.js using NVM.
+In this introduction part of Node.js program, you will need to become familiar with Node.js, install NPM, and be able 
+to manage multiple versions of Node.js. This typically involves downloading the Node.js installer from the official 
+website and running it to complete the installation. After that Node.js and NPM could be used to create and run 
+applications, manage dependencies and switch between different versions of Node.js using NVM.
 
 ## Prerequisites
 
-1. Install the latest `LTS` (Long Term Support) version of **Node.js**, by any available means `(.exe, nvm, brew, etc.)`.
-2. Check in the console (terminal) that the Node.js installation was done properly by running the following commands `node -v` or `node -version`.
-3. Create a repo for your homework tasks on **GitHub** or **Git Epam**.
+1. Install the latest `LTS` (Long Term Support) version of ([Node.js](https://nodejs.org/en/)), by any available 
+means `(.exe, nvm, brew, etc.)`.
+2. Check in the console (terminal) that the Node.js installation was done properly by running the following commands 
+`node -v` or `node -version`.
+3. Create a repo for your homework tasks on ([GitHub](https://github.com/)) or ([Git Epam](https://git.epam.com/).
 4. Provide your mentor with the link to the repo and add read access permissions.
+   
 
 ## Home task
 
 1. Create `package.json` by running the following commands `npm init` or `npm init -y`.
-2. Install npm package **nodemon** globally or locally as dev dependency.
+2. Install npm package ([nodemon](https://github.com/remy/nodemon)) globally or locally as dev dependency.
 3. Create `index.js` file with `getRandomNumber()` function. The program should be started via npm script using `nodemon`.
 4. Run `getRandomNumber()` function in REPL mode to perform operations from CLI.
-5. Install **NVM** verify installation `command -v` nvm.
+5. Install ([NVM](https://github.com/nvm-sh/nvm#intro)) verify installation `command -v` nvm.
 
 ## Acceptance criteria
 
