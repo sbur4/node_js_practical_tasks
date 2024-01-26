@@ -1,7 +1,8 @@
 {
   "name": "node_js_practical_tasks",
   "version": "1.0.0",
-  "description": "EPAM NodeJs practice",
+  "description": "EPAM NodeJs practice. Task 4",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage"
@@ -10,8 +11,14 @@
     "type": "git",
     "url": "git+https://github.com/sbur4/node_js_practical_tasks.git"
   },
-  "keywords": [],
+  "keywords": [
+    "js",
+    "nodejs",
+    "ts",
+    "nodemon"
+  ],
   "author": "serhii_burch@epam.com",
+  "website": "https://github.com/sbur4",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
@@ -29,5 +36,8 @@
   },
   "dependencies": {
     "axios": "^1.6.5"
-  }
+  },
+  "files": [
+    "/src/**"
+  ]
 }
