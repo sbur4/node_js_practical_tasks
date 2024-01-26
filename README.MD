@@ -1,4 +1,4 @@
-# Practical task
+# Practical task 5
 
 ## Requirements
 
@@ -37,9 +37,10 @@ hobbies: ['series', 'sport'],
 
 ### Acceptance criteria:
 
-1. No frameworks are used. Server is created using **http** module.
+1. No frameworks are used. Server is created using [http](https://nodejs.org/api/http.html) module.
 2. API is designed based on REST API principles. Constraints are not violated.
-3. The functionality mentioned above is implemented. Proper status codes are used for responses (not only 200, but also e.g 201, 404). Input validation and authentication can be skipped.
+3. The functionality mentioned above is implemented. Proper status codes are used for responses (not only 200, but also
+e.g 201, 404). Input validation and authentication can be skipped.
 
 **Note:** Try to think of modular structure for the task. Please do not have all the implementation in one file.
 
