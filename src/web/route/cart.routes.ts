@@ -12,4 +12,5 @@ cartRouter.delete('/', CartController.deleteCart);
 cartRouter.post('/checkout', OrderController.makeOrder);
 
 export const CART_URL = '/api/profile/cart';
+
 export default cartRouter;

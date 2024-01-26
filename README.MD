@@ -1,29 +1,22 @@
 # Practical task
 
-We are going to create an Express application for online shop which sells different types of products (like e.g Amazon). We are going to implement functionality for managing carts, creating orders and products.
+In this task you will need to modify existing Express application by extending user model, adding authorization and authentication flows.
 
-## The application has 4 primary entities:
+## Acceptance criteria
 
-- ``User`` - can add some products to the cart and then order them (***example***).
-- ``Product`` - represents product information that user can order (***example***).
-- ``Cart`` - contains a list of products and their amount that user wants to order (***example***).
-- ``Order`` - contains list of products from cart that user has ordered (***example***).
+1. User entity is added - contains id ([uuid](https://www.npmjs.com/package/uuid)), email (unique), password, role (admin or simple user). 
+Password is stored as hashed value in the database. [Bcrypt](https://www.npmjs.com/package/bcrypt) module is used for hashing passwords.
+2. New API endpoint is added for user ***sign up*** by email and password e.g ``/register``. It creates user entity in the database.
+3. New API endpoint is added for user ***sign in*** by email and password e.g ``/login``. It returns JWT token which contains 
+user information. Pay attention that password is not encoded in token payload. JWT token expires in 2 hours.
+4. JWT token is passed in ``Authorization`` header for each request (except sign in and sign up) in the following format ``Authorization: Bearer <token>``
+5. Authentication middleware is added to check if token provided is valid and if user encoded in token exists. 
+If no, ``401 Unauthorized`` status code is returned. Otherwise, user can do action they intended to do.
 
-### Relations between entities:
+### Additional tasks:
 
-- Each ``User`` can have only one non-deleted ``Cart`` at a time. Each ``Cart`` is attached to a specific ``User``.
-- One ``User`` can have multiple Orders. Each ``Order`` is attached to a specific ``User``.
-- ``Cart`` contains a list of products that user wants to order **with the amount** of those products specified.
-
-## Acceptance criteria:
-
-### Note: TypeScript should be used.
-
-1. Data is stored in MongoDB database. **Docker image** is used for local development (check **Running MongoDB as a Docker Container** for an example of docker-compose file).
-2. **Mongoose** is used as ODM for querying.
-3. Data Access Layer is rewritten to query MongoDB.
-4. Models are created based on entity **schemas** used in Express and Layered Architecture module.
-5. Models have proper relations between each other based on information specified above.
+1. Only admin users can delete user cart. Authorization middleware is added for this purpose.
+If token provided doesn't belong to admin member, ``403 Forbidden`` status code is returned.
 
 ## Evaluation criteria
 

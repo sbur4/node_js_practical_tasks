@@ -12,7 +12,8 @@ import {IProductEntity} from "../../data/entity/product.entity";
 class CartController {
     public async getCart(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.header(USER_ID_HEADER);
+            // const userId = req.header(USER_ID_HEADER);
+            const userId = req.user.id;//
 
             const cart: ICartEntity | null = await CartEntity.findOne({user: userId});
 
@@ -42,7 +43,8 @@ class CartController {
 
     public async addToCart(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.header(USER_ID_HEADER);
+            // const userId = req.header(USER_ID_HEADER);
+            const userId = req.user.id;//
 
             const productId = req.body.id;
 
@@ -102,7 +104,8 @@ class CartController {
 
     public async updateCart(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.header(USER_ID_HEADER);
+            // const userId = req.header(USER_ID_HEADER);
+            const userId = req.user.id;//
 
             const productId = req.body.id;
             const amount = req.body.count;
@@ -197,7 +200,9 @@ class CartController {
 
     public async deleteCart(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.header(USER_ID_HEADER);
+            // const userId = req.header(USER_ID_HEADER);
+            const userId = req.user.id;//
+
 
             const currentCart: ICartEntity | null = await CartEntity.findOne({user: userId});
 

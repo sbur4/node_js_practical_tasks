@@ -7,6 +7,8 @@ import {idValidator} from "../../core/validator/id.validator";
 class ProductController {
     public async getAllProducts(req: Request, res: Response): Promise<void> {
         try {
+            const userId = req.user.id;//
+
             const products = await findAllProducts();
             console.log('Products was found');
 
@@ -23,6 +25,8 @@ class ProductController {
 
     public async getProductById(req: Request, res: Response): Promise<void> {
         try {
+            const userId = req.user.id;//
+
             const productId = req.params.id;
 
             if (idValidator(productId)) {

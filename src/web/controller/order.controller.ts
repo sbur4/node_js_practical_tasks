@@ -7,7 +7,8 @@ import {createOrder} from "../../core/service/order.service";
 class OrderController {
     public async makeOrder(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.header(USER_ID_HEADER);
+            // const userId = req.header(USER_ID_HEADER);
+            const userId = req.user.id;//
 
             const cart = await findCartByUserId(userId!);
             if (!cart) {

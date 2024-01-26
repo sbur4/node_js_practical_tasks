@@ -41,6 +41,11 @@ npm i express
 npm i joi
 npm i uuid
 
-install mongodb driver
 npm i mongoose
-npm i @types/mongoose
+
+npm i dotenv
+npm i bcrypt
+npm i jsonwebtoken
+
+npm install mongoose express jsonwebtoken dotenv bcryptjs
+npm install -D typescript @types/mongoose @types/express @types/jsonwebtoken @types/node @types/bcryptjs
