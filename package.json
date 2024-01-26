@@ -10,11 +10,19 @@
     "type": "git",
     "url": "git+https://github.com/sbur4/node_js_practical_tasks.git"
   },
-  "keywords": [],
+  "keywords": [
+    "js",
+    "nodejs",
+    "ts"
+  ],
   "author": "serhii_burch@epam.com",
+  "website": "https://github.com/sbur4",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
-  }
+  },
+  "files": [
+    ""
+  ]
 }
 
