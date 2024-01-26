@@ -67,7 +67,7 @@ npm install -g npx
 >
 > ([MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript))
 
-# TASK 1
+# TASK 2
 
 ```
 npm init or npm init -y
