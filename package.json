@@ -1,7 +1,8 @@
 {
   "name": "node_js_practical_tasks",
   "version": "1.0.0",
-  "description": "EPAM NodeJs practice",
+  "description": "EPAM NodeJs practice. Task 3",
+  "main": "src/index.js",
   "scripts": {
     "practice_task_1_node": "node src/task_1/test-event-emitter",
     "practice_task_1_nodemon": "nodemon src/task_1/test-event-emitter",
@@ -14,8 +15,14 @@
     "type": "git",
     "url": "git+https://github.com/sbur4/node_js_practical_tasks.git"
   },
-  "keywords": [],
+  "keywords": [
+    "js",
+    "nodejs",
+    "ts",
+    "nodemon"
+  ],
   "author": "serhii_burch@epam.com",
+  "website": "https://github.com/sbur4",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
@@ -25,5 +32,8 @@
   },
   "dependencies": {
     "csvtojson": "^2.0.10"
-  }
+  },
+  "files": [
+    "/src/**"
+  ]
 }
