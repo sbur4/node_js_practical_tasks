@@ -1,9 +1,6 @@
 import {DI} from "../../web/demo.app";
-import {CartItemsDto} from "../dto/car.items.dto";
-import {createCartItemsDto} from "../converter/cart.dto.converter";
 import {CartEntity} from "../../data/entity/cart.entity";
 import {cartItemSchema, CartUpdateDto} from "../dto/cart.update.dto";
-import {CartItemEntity} from "../../data/entity/cartItem.entity";
 import CartNotFoundByIdException from "../exception/cart.not.found.by.user.id.exception";
 import CartNotCreatedByIdException from "../exception/cart.not.created.by.user.id.exception";
 import CartNotDeleteByUserId from "../exception/cart.not.deleted.by.user.id.exception";
@@ -51,13 +48,13 @@ export async function updatedProductInCart(cart: CartEntity, cartUpdateDto: Cart
             for (let cartItem of cart.products) {
                 if (cartItem.product.id === cartUpdateDto.productId) {
 
-                    const currentCount: number = cartItem.count;
+                    const currentCount: number = cartItem.count  + (cartUpdateDto.count);
 
-                    if (currentCount + (cartUpdateDto.count) <= 0) {
+                    if (currentCount <= 0) {
                         cart.products.remove(cart.products.find(item => item.product.id === cartUpdateDto.productId)!);
                         console.log(`Product id:${cartUpdateDto.productId} was deleted from cart id:${cart.id}`);
                     } else {
-                        cartItem.count = cartItem.count + cartUpdateDto.count;
+                        cartItem.count = currentCount;
                         console.log(`Product id:${cartUpdateDto.productId} was reduced in cart id:${cart.id}`);
                     }
                 }
@@ -70,9 +67,7 @@ export async function updatedProductInCart(cart: CartEntity, cartUpdateDto: Cart
         } else {
             for (let cartItem of cart.products) {
                 if (cartItem.product.id === cartUpdateDto.productId) {
-                    const currentCount: number = cartItem.count;
-
-                    cartItem.count = currentCount + cartUpdateDto.count;
+                    cartItem.count += cartUpdateDto.count;
                     console.log(`Product id:${cartUpdateDto.productId} was increased in cart id:${cart.id}`);
                 }
             }
