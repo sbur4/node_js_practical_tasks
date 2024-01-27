@@ -15,7 +15,7 @@ export class CartItemEntity extends BaseEntity {
     @OneToOne(() => ProductEntity, {eager: true, cascade: [Cascade.ALL]})
     product!: ProductEntity;
 
-    @ManyToOne(() => CartEntity, {eager: true, cascade: [Cascade.ALL]})
+    @ManyToOne(() => CartEntity, {lazy: true, cascade: [Cascade.ALL]})
     cart!: CartEntity;
 
     [EntityRepositoryType] ?: CartItemRepository;

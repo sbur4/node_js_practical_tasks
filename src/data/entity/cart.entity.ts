@@ -12,7 +12,7 @@ export class CartEntity extends BaseEntity {
     })
     isDeleted?: boolean = false;
 
-    @ManyToOne(() => UserEntity, {eager: true, cascade: [Cascade.ALL]})
+    @ManyToOne(() => UserEntity, {lazy: true, cascade: [Cascade.ALL]})
     user!: UserEntity;
 
     @OneToMany(() => CartItemEntity, (item) => item.cart,

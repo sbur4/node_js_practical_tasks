@@ -1,6 +1,7 @@
 import express from 'express';
 import {EntityManager, MikroORM, RequestContext} from '@mikro-orm/core';
 import {PostgreSqlDriver} from '@mikro-orm/postgresql';
+import http from "http";
 
 import config from "./config/mikro.orm.config";
 import {UserEntity} from "../data/entity/user.entity";
@@ -11,7 +12,6 @@ import {OrderEntity} from "../data/entity/order.entity";
 import productRouter, {PRODUCT_URL} from "../web/route/product.routes";
 import cartRouter, {CART_URL} from "./route/cart.routes";
 import {authenticationCheck} from "./middleware/auth.service";
-import http from "http";
 import {UserRepository} from "../data/repository/user.repository";
 import {ProductRepository} from "../data/repository/product.repository";
 import {CartRepository} from "../data/repository/cart.repository";
@@ -57,7 +57,7 @@ export const init = (async () => {
     DI.addressRepository = DI.orm.em.getRepository(AddressEntity);
     DI.deliveryRepository = DI.orm.em.getRepository(DeliveryEntity);
 
-    await fillDatabase(DI.em);
+    await fillDatabase(DI.em).then(() => console.log('Database was filled'));
 
     app.use(express.json());
     app.use((req, res, next) => RequestContext.create(DI.orm.em, next));

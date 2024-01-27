@@ -21,7 +21,7 @@ class ProductController {
         }
     }
 
-    public async getProductById(req: Request, res: Response) {
+    public async getProductById(req: Request, res: Response): Promise<void> {
         try {
             const productId = req.params.id;
 

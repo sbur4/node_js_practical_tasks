@@ -1,7 +1,7 @@
 {
   "name": "node_js_practical_tasks",
   "version": "1.0.0",
-  "description": "EPAM NodeJs practice",
+  "description": "EPAM NodeJs practice. Task 7",
   "main": "demo.app.ts",
   "scripts": {
     "dev": "nodemon src/web/demo.app.ts",
@@ -12,8 +12,14 @@
     "type": "git",
     "url": "git+https://github.com/sbur4/node_js_practical_tasks.git"
   },
-  "keywords": [],
+  "keywords": [
+    "js",
+    "nodejs",
+    "ts",
+    "nodemon"
+  ],
   "author": "serhii_burch@epam.com",
+  "website": "https://github.com/sbur4",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sbur4/node_js_practical_tasks/issues"
@@ -37,6 +43,9 @@
     "typescript": "^5.3.3",
     "uuid": "^9.0.1"
   },
+  "files": [
+    "/src/**"
+  ],
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [

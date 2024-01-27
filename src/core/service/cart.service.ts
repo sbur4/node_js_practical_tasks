@@ -2,73 +2,107 @@ import {DI} from "../../web/demo.app";
 import {CartItemsDto} from "../dto/car.items.dto";
 import {createCartItemsDto} from "../converter/cart.dto.converter";
 import {CartEntity} from "../../data/entity/cart.entity";
-import {CartUpdateDto} from "../dto/cart.update.dto";
+import {cartItemSchema, CartUpdateDto} from "../dto/cart.update.dto";
 import {CartItemEntity} from "../../data/entity/cartItem.entity";
+import CartNotFoundByIdException from "../exception/cart.not.found.by.user.id.exception";
+import CartNotCreatedByIdException from "../exception/cart.not.created.by.user.id.exception";
+import CartNotDeleteByUserId from "../exception/cart.not.deleted.by.user.id.exception";
+import CartItemValidationException from "../exception/cart.item.validation.exception";
+import CartNotUpdatedByUserIdException from "../exception/cart.not.updated.by.user.id.exception";
 
-export async function findCartById(id: string): Promise<CartItemsDto> {
-    const cart = await DI.cartRepository.findOne({id});
-    console.log(`Cart was found by cart id:${id}`);
-
-    if (!cart) {
-        console.warn(`Cart not found for id:${id}`);
-        throw new Error(`Cart not found for id: ${id}`);
-
-        return {
-            cart: new CartEntity(),
-            total: 0
-        };
+export async function findCarByUserId(userId: string): Promise<CartEntity | null> {
+    try {
+        return await DI.cartRepository.createQueryBuilder()
+            .where({user_id: userId})
+            .getSingleResult();
+    } catch (error) {
+        console.error(`Cart not found by id:${userId} `, error);
+        throw new CartNotFoundByIdException(userId);
     }
-
-    const cartItemsDto: CartItemsDto = createCartItemsDto(cart!);
-
-    return cartItemsDto;
 }
 
-export async function addCartByUserId(id: string): Promise<CartEntity> {
-    return await createCartByUserId(id);
+export async function createNewCart(id: string): Promise<CartEntity | null> {
+    try {
+        const user = await DI.userRepository.findOne({id});
+        const newCart: CartEntity = new CartEntity(false);
+        newCart.user = user!;
+
+        await DI.cartRepository.insert(newCart);
+        console.log(`Cart was saved by id:${newCart.id}`);
+
+        return newCart;
+    } catch (error) {
+        console.error(`Cart not created by id:${id} `, error);
+        throw new CartNotCreatedByIdException(id);
+    }
 }
 
-export async function addProductsToCart(userId: string, cartId: string, cartUpdateDto: CartUpdateDto)
-    : Promise<CartItemsDto | undefined> {
+export async function updatedProductInCart(cart: CartEntity, cartUpdateDto: CartUpdateDto): Promise<CartEntity> {
+    try {
+        if (cartUpdateDto.count === 0) {
+            cart.products.remove(cart.products.find(item => item.product.id === cartUpdateDto.productId)!);
+            console.log(`Product id:${cartUpdateDto.productId} was deleted from cart id:${cart.id}`);
 
-    const currentCart = await DI.cartRepository.findOne({id: cartId});
+            await DI.cartRepository.upsert(cart);
+            console.log(`Cart id:${cart.id} was updated by user id:${cart.user.id}`);
 
-    const product = await DI.productRepository.findOne({id: cartUpdateDto.productId});
+            return cart;
+        } else if (cartUpdateDto.count < 0) {
+            for (let cartItem of cart.products) {
+                if (cartItem.product.id === cartUpdateDto.productId) {
 
-    if (currentCart) {
-        if (product) {
-            if (currentCart.products.getItems().some(item => item.product.id === product.id)) {
-                await DI.cartItemRepository.createQueryBuilder().update({count: cartUpdateDto.count})
-                    .where({cart_id: currentCart.id}).andWhere({product_id: product.id});
-                console.log(`Cart was updated by id:${currentCart.id}`);
-            } else {
-                const newItem: CartItemEntity = new CartItemEntity();
-                newItem.cart = currentCart;
-                newItem.product = product;
-                newItem.count = cartUpdateDto.count;
-                currentCart.products.add(newItem);
+                    const currentCount: number = cartItem.count;
 
-                // await DI.cartItemRepository.upsert(newItem);
-                await DI.cartItemRepository.create(newItem);
-                console.log(`Cart was created by id:${currentCart.id}`);
+                    if (currentCount + (cartUpdateDto.count) <= 0) {
+                        cart.products.remove(cart.products.find(item => item.product.id === cartUpdateDto.productId)!);
+                        console.log(`Product id:${cartUpdateDto.productId} was deleted from cart id:${cart.id}`);
+                    } else {
+                        cartItem.count = cartItem.count + cartUpdateDto.count;
+                        console.log(`Product id:${cartUpdateDto.productId} was reduced in cart id:${cart.id}`);
+                    }
+                }
             }
+
+            await DI.cartRepository.upsert(cart); // todo
+            console.log(`Cart id:${cart.id} was updated by user id:${cart.user.id}`);
+
+            return cart;
+        } else {
+            for (let cartItem of cart.products) {
+                if (cartItem.product.id === cartUpdateDto.productId) {
+                    const currentCount: number = cartItem.count;
+
+                    cartItem.count = currentCount + cartUpdateDto.count;
+                    console.log(`Product id:${cartUpdateDto.productId} was increased in cart id:${cart.id}`);
+                }
+            }
+
+            await DI.cartRepository.upsert(cart); // todo
+            console.log(`Cart id:${cart.id} was updated by user id:${cart.user.id}`);
+
+            return cart;
         }
-
-        const cartItemsDto: CartItemsDto = createCartItemsDto(currentCart!);
-
-        return cartItemsDto;
+    } catch (error) {
+        console.error(`Can't update cart id:${cart.id} by id:${cart.user.id} `, error);
+        throw new CartNotUpdatedByUserIdException(cart.user.id, cart.id);
     }
 }
 
-async function createCartByUserId(id: string) {
-    console.warn(`Cart not found by user id:${id}`);
+export async function deleteCartByUserId(cart: CartEntity): Promise<void> {
+    try {
+        await DI.cartRepository.createQueryBuilder().delete({id: cart.id});
+        console.log(`Cart was deleted by user id:${cart.user.id}`)
+    } catch (error) {
+        console.error(`Can't delete cart by user id:${cart.user.id} `, error);
+        throw new CartNotDeleteByUserId(cart.user.id);
+    }
+}
 
-    const user = await DI.userRepository.findOne({id});
-    const newCart: CartEntity = new CartEntity(false);
-    newCart.user = user!;
-
-    await DI.cartRepository.insert(newCart);
-    console.log(`Cart was saved by id:${newCart.id}`);
-
-    return newCart;
+export async function validateReceivedUpdatedCartItem(updatedCartItem: CartUpdateDto) {
+    try {
+        return await cartItemSchema.validateAsync(updatedCartItem);
+    } catch (error) {
+        console.error(`Invalid product id:${updatedCartItem.productId} or amount:${updatedCartItem.count} `, error);
+        throw new CartItemValidationException(updatedCartItem.productId, updatedCartItem.count);
+    }
 }
