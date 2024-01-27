@@ -1,9 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response} from 'express';
 
-import {isUserExist} from "../../core/service/user.service";
+import {findUserById} from "../../core/service/user.service";
 import {SERVER_ERROR_RESPONSE} from "../../core/util/response.util";
 
-export const authenticationCheck: RequestHandler = (
+export const authenticationCheck: RequestHandler = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -17,7 +17,9 @@ export const authenticationCheck: RequestHandler = (
                 return res.status(403).json({data: null, error: {message: 'You must be authorized user'}});
             }
 
-            if (!isUserExist(userId)) {
+            const user = await findUserById(userId);
+
+            if (!user) {
                 console.log(`User is not authorized ${userId}`);
                 return res.status(401).json({
                     data: null, error: {message: 'User is not authorized'}

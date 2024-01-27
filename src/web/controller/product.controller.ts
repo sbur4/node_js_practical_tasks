@@ -6,7 +6,7 @@ import {SERVER_ERROR_RESPONSE} from "../../core/util/response.util";
 class ProductController {
     public async getAllProducts(req: Request, res: Response): Promise<void> {
         try {
-            const products = findAllProducts();
+            const products = await findAllProducts();
             console.log('Products was found');
 
             res.status(200).json({
@@ -20,11 +20,11 @@ class ProductController {
         }
     }
 
-    public async getProductById(req: Request, res: Response) {
+    public async getProductById(req: Request, res: Response): Promise<void> {
         try {
             const productId = req.params.id;
 
-            const product = findProductById(productId);
+            const product = await findProductById(productId!);
             console.log(`Products was found by product id:${productId}`);
 
             if (!product) {

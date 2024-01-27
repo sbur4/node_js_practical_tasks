@@ -1,49 +1,59 @@
 import {Request, Response} from 'express';
 
 import {
-    addProductsToCart,
     createNewCart,
-    deleteCart,
-    getCart,
+    deleteCartByUserId,
+    findCarByUserId,
+    updatedProductInCart,
     validateReceivedUpdatedCartItem
 } from "../../core/service/cart.service";
-import {isUserContainCartAndProduct, isUserHasActiveCart} from "../../data/repository/cart.repository";
 import {SERVER_ERROR_RESPONSE, USER_ID_HEADER} from "../../core/util/response.util";
+import {CartItemsDto} from "../../core/dto/car.items.dto";
+import {createCartItemsDto} from "../../core/converter/cart.dto.converter";
 import {CartUpdateEntity} from "../../data/entity/cart.entity";
 import {findProductById} from "../../core/service/product.service";
 
 class CartController {
-
-    public getCart(req: Request, res: Response): void {
+    public async getCart(req: Request, res: Response): Promise<void> {
         try {
             const userId = req.header(USER_ID_HEADER);
 
-            const userCart = getCart(userId!);
+            const cart = await findCarByUserId(userId!);
 
-            console.log(`Cart was found by user id:${userId}`);
-            res.status(200).json({
-                data: {cart: userCart},
-                error: null
-            });
+            if (!cart) {
+                console.log(`User does not have an active cart for user id:${userId}`);
 
-        } catch (error) {
-            console.error(error);
-            res.status(500).json(SERVER_ERROR_RESPONSE);
-        }
-    }
+                const newCart = await createNewCart(userId!);
+                console.log(`Cart was created by user id:${userId}`);
 
-    public createCart(req: Request, res: Response): void {
-        try {
-            const userId = req.header(USER_ID_HEADER);
+                const cartDto: CartItemsDto = await createCartItemsDto(newCart);
 
-            const newCart = createNewCart(userId!);
-            console.log(`Cart was created by user id:${userId}`);
+                res.status(201).json({
+                    data: {cart: cartDto},
+                    error: null
+                });
+                return;
+            } else {
+                if (cart.isDeleted) {
+                    res.status(404).json({
+                        data: null,
+                        error: {
+                            message: `Cart was disabled for the user id:${userId}`
+                        }
+                    });
+                    console.warn(`Cart was disabled for the user id:${userId}`);
+                    return;
+                }
 
-            res.status(201).json({
-                data: newCart,
-                error: null
-            });
+                console.log(`Cart was found by user id:${userId}`);
 
+                const cartDto: CartItemsDto = await createCartItemsDto(cart);
+
+                res.status(200).json({
+                    data: {cart: cartDto},
+                    error: null
+                });
+            }
         } catch (error) {
             console.error(error);
             res.status(500).json(SERVER_ERROR_RESPONSE);
@@ -56,51 +66,64 @@ class CartController {
 
             const validatedItem: CartUpdateEntity = await validateReceivedUpdatedCartItem(req.body);
 
-            const isActiveCart = isUserHasActiveCart(userId!);
-            if (!isActiveCart) {
-                res.status(404).json({
+            const cart = await findCarByUserId(userId!);
+
+            if (!cart) {
+                console.log(`User id:${userId} has no cart`);
+
+                res.status(400).json({
                     data: null,
-                    error: {
-                        message: 'Cart was not found'
-                    }
+                    error: `User id:${userId} has no cart`
                 });
-                console.warn(`Cart was not found by user id:${userId}`);
                 return;
+            } else {
+                if (cart.isDeleted) {
+                    res.status(404).json({
+                        data: null,
+                        error: {
+                            message: `Cart was disabled for the user id:${userId}`
+                        }
+                    });
+                    console.warn(`Cart was disabled for the user id:${userId}`);
+                    return;
+                }
+
+                const product = findProductById(validatedItem.productId);
+
+                if (!product) {
+                    res.status(400).json({
+                        data: null,
+                        error: {
+                            message: `Product is not valid by id:${validatedItem.productId}`
+                        }
+                    });
+                    console.warn(`Product is not valid by id:${validatedItem.productId}`);
+                    return;
+                }
             }
 
-            const product = findProductById(validatedItem.productId);
-            if (!product) {
+            if (!cart.items.some((cartItem) => cartItem.product.id === validatedItem.productId)) {
                 res.status(400).json({
                     data: null,
                     error: {
-                        message: 'Product is not valid'
+                        message: `Cart id${cart?.id} doesn't contains a product:${validatedItem.productId}`
                     }
                 });
-                console.warn(`Product is not valid by id:${validatedItem.productId}`);
+                console.warn(`Cart id${cart?.id} doesn't contains a product:${validatedItem.productId}`);
                 return;
             }
 
-            const isCartContainsProduct = isUserContainCartAndProduct(userId!, validatedItem.productId);
-            if (!isCartContainsProduct) {
-                res.status(400).json({
-                    data: null,
-                    error: {
-                        message: `Cart isn't contains product`
-                    }
-                });
-                console.warn(`Cart isn't contains product:${validatedItem.productId}`);
-                return;
-            }
+            const updatedCart = await updatedProductInCart(cart!, validatedItem!);
 
-            const updatedCart = addProductsToCart(userId!, validatedItem!);
+            const cartDto: CartItemsDto = await createCartItemsDto(updatedCart);
 
             res.status(200).json({
-                data: {cart: updatedCart},
+                data: {cart: cartDto},
                 error: null
             });
 
         } catch (error: any) {
-            if (error?.name === 'ValidationError') {
+            if (error?.name === 'CartItemValidationException') {
                 res.status(400).json({
                     data: null,
                     error: error.message,
@@ -112,30 +135,43 @@ class CartController {
         }
     }
 
-    public deleteCart(req: Request, res: Response): void {
+    public async deleteCart(req: Request, res: Response): Promise<void> {
         try {
             const userId = req.header(USER_ID_HEADER);
 
-            const isActiveCart = isUserHasActiveCart(userId!);
-            if (!isActiveCart) {
-                res.status(404).json({
+            const cart = await findCarByUserId(userId!);
+
+            if (!cart) {
+                console.log(`User id:${userId} has no cart`);
+
+                res.status(400).json({
                     data: null,
-                    error: {
-                        message: 'Cart was not found'
-                    }
+                    error: `User id:${userId} has no cart`
                 });
-                console.warn(`Cart was not found by user id:${userId}`);
                 return;
+            } else {
+                if (cart.isDeleted) {
+                    res.status(404).json({
+                        data: null,
+                        error: {
+                            message: `Cart was disabled for the user id:${userId}`
+                        }
+                    });
+                    console.warn(`Cart was disabled for the user id:${userId}`);
+                    return;
+                }
+
+                console.log(`Cart was found by user id:${userId}`);
+
+                await deleteCartByUserId(userId!);
+
+                res.status(200).send({
+                    data: {
+                        success: true,
+                    },
+                    error: null
+                });
             }
-
-            deleteCart(userId!);
-
-            res.status(200).send({
-                data: {
-                    success: true,
-                },
-                error: null
-            });
         } catch (error) {
             console.error(error);
             res.status(500).json(SERVER_ERROR_RESPONSE);
