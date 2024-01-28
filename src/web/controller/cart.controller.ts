@@ -14,25 +14,26 @@ class CartController {
         try {
             const userId = req.header(USER_ID_HEADER);
 
-            const cart: ICartEntity | null = await CartEntity.findOne({user: userId});
+            const cart = await CartEntity.findOne({user: userId});
+            // const cart: ICartEntity | null = await CartEntity.findOne({user: userId});
 
-            if (cart !== null && cart!.isDeleted) {
-                console.log(`Cart was deleted by id:${cart!.id}`);
-                res.status(400).json({
-                    data: null,
-                    error: {
-                        message: `Cart was deleted by id:${cart!.id} for the user with id:${userId}`
-                    }
-                });
-                return;
-            }
+            // if (cart !== null && cart!.isDeleted) {
+            //     console.log(`Cart was deleted by id:${cart!.id}`);
+            //     res.status(400).json({
+            //         data: null,
+            //         error: {
+            //             message: `Cart was deleted by id:${cart!.id} for the user with id:${userId}`
+            //         }
+            //     });
+            //     return;
+            // }
+            //
+            // const userCart = await getOrCreateCart(userId!, cart!);
 
-            const userCart = await getOrCreateCart(userId!, cart!);
-
-            res.status(201).json({
-                data: {cart: userCart},
-                error: null
-            });
+            // res.status(201).json({
+            //     data: {cart: userCart},
+            //     error: null
+            // });
 
         } catch (error) {
             console.error(error);
