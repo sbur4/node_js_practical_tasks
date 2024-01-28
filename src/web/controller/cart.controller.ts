@@ -15,43 +15,55 @@ import {CartUpdateDto} from "../../core/dto/cart.update.dto";
 
 class CartController {
     public async getCart(req: Request, res: Response): Promise<void> {
-        const userId = req.header(USER_ID_HEADER);
+        try {
+            const userId = req.header(USER_ID_HEADER);
 
-        const cart = await findCarByUserId(userId!);
+            const cart = await findCarByUserId(userId!);
 
-        if (!cart) {
-            console.log(`User does not have an active cart for user id:${userId}`);
+            if (!cart) {
+                console.log(`User does not have an active cart for user id:${userId}`);
 
-            const newCart = await createNewCart(userId!);
-            console.log(`Cart was created by user id:${userId}`);
+                const newCart = await createNewCart(userId!);
+                console.log(`Cart was created by user id:${userId}`);
 
-            const cartDto: CartItemsDto = await createCartItemsDto(newCart!);
+                const cartDto: CartItemsDto = await createCartItemsDto(newCart!);
 
-            res.status(201).json({
-                data: cartDto,
-                error: null
-            });
-            return;
-        } else {
-            if (cart.isDeleted) {
-                res.status(404).json({
-                    data: null,
-                    error: {
-                        message: `Cart was disabled for the user id:${userId}`
-                    }
+                res.status(201).json({
+                    data: cartDto,
+                    error: null
                 });
-                console.warn(`Cart was disabled for the user id:${userId}`);
+                return;
+            } else {
+                if (cart.isDeleted) {
+                    res.status(404).json({
+                        data: null,
+                        error: {
+                            message: `Cart was disabled for the user id:${userId}`
+                        }
+                    });
+                    console.warn(`Cart was disabled for the user id:${userId}`);
+                    return;
+                }
+
+                console.log(`Cart was found by user id:${userId}`);
+
+                const cartDto: CartItemsDto = await createCartItemsDto(cart);
+
+                res.status(200).json({
+                    data: cartDto,
+                    error: null
+                });
+            }
+        } catch (error: any) {
+            if (error?.name === 'CartItemValidationException') {
+                res.status(400).json({
+                    data: null,
+                    error: error.message,
+                })
                 return;
             }
-
-            console.log(`Cart was found by user id:${userId}`);
-
-            const cartDto: CartItemsDto = await createCartItemsDto(cart);
-
-            res.status(200).json({
-                data: cartDto,
-                error: null
-            });
+            console.error(error);
+            res.status(500).json(SERVER_ERROR_RESPONSE);
         }
     }
 
