@@ -6,5 +6,3 @@ export const SERVER_ERROR_RESPONSE = {
 };
 
 export const USER_ID_HEADER = 'x-user-id';
-
-// todo +-

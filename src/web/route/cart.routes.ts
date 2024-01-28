@@ -6,8 +6,7 @@ import OrderController from "../controller/order.controller";
 const cartRouter = express.Router();
 
 cartRouter.get('/', CartController.getCart);
-cartRouter.post('/', CartController.addToCart);
-cartRouter.put('/', CartController.updateCart); // todo
+cartRouter.put('/', CartController.updateCart);
 cartRouter.delete('/', CartController.deleteCart);
 cartRouter.post('/checkout', OrderController.makeOrder);
 

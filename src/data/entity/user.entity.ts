@@ -22,5 +22,3 @@ userSchema.methods.toJSON = function () {
 }
 
 export const UserEntity = model('User', userSchema);
-
-// todo +

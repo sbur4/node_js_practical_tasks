@@ -41,5 +41,3 @@ export const authenticationCheck: RequestHandler = async (
         next();
     }
 }
-
-// todo +

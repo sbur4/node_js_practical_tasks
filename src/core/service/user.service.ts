@@ -9,5 +9,3 @@ export async function findUserById(id: string): Promise<IUserEntity | null> {
         throw new UserFindByIdException(id);
     }
 }
-
-// todo +

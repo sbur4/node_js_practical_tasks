@@ -5,5 +5,3 @@ export function idValidator(id: string): boolean {
 export function amountValidator(id: string): boolean {
     return typeof id !== 'number' || isNaN(id);
 }
-
-// todo +-

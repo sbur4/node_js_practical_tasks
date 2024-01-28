@@ -8,10 +8,11 @@ import {fillDatabase} from "../data/storage/test.storage";
 
 const app = express();
 const port = process.env.PORT || 3000;
+const db_connection = process.env.MONGO_URI || 'mongodb://localhost:27017/admin';
 
 const startServer = async () => {
     try {
-        await connect(`mongodb://localhost:27017/admin`).then(() => console.log('Connected to MongoDB!'));
+        await connect(db_connection).then(() => console.log('Connected to MongoDB!'));
 
         // Uncomment the line below to fill the database only once
         // await fillDatabase();
@@ -40,5 +41,3 @@ const startServer = async () => {
 };
 
 startServer().then(() => console.log('Init server...'));
-
-// todo +
