@@ -55,13 +55,6 @@ class CartController {
                 });
             }
         } catch (error: any) {
-            if (error?.name === 'CartItemValidationException') {
-                res.status(400).json({
-                    data: null,
-                    error: error.message,
-                })
-                return;
-            }
             console.error(error);
             res.status(500).json(SERVER_ERROR_RESPONSE);
         }
