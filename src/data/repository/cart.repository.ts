@@ -33,3 +33,7 @@ export async function deleteByUserId(userId: string): Promise<void> {
         return cart;
     });
 }
+
+export async function save(newCart: CartEntity): Promise<void> {
+    CARTS_DB.push(newCart);
+}
