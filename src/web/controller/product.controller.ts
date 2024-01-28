@@ -3,6 +3,8 @@ import {Request, Response} from 'express';
 import {SERVER_ERROR_RESPONSE, USER_ID_HEADER} from "../../core/util/response.util";
 import {findAllProducts, findProductById} from "../../core/service/product.service";
 import {insertProductIntoCart} from "../../core/service/cart.service";
+import {CartItemsDto} from "../../core/dto/car.items.dto";
+import {createCartItemsDto} from "../../core/converter/cart.dto.converter";
 
 class ProductController {
     public async getAllProducts(req: Request, res: Response): Promise<void> {
@@ -74,8 +76,10 @@ class ProductController {
             const cart = await insertProductIntoCart(product!, userId!);
             console.log(`Product id:${productId} was added to the cart by user id:${userId}`);
 
+            const cartDto: CartItemsDto = await createCartItemsDto(cart);
+
             res.status(200).send({
-                data: cart,
+                data: cartDto,
                 error: null
             });
         } catch (error) {
