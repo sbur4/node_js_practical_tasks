@@ -97,7 +97,7 @@ class CartController {
                 }
             }
 
-            if (!cart.products.exists((cartItem) => cartItem.product.id === validatedItem.productId)) { // todo
+            if (!cart.products.exists((cartItem) => cartItem.product.id === validatedItem.productId)) {
                 res.status(400).json({
                     data: null,
                     error: {
