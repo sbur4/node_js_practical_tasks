@@ -57,7 +57,6 @@ class ProductController {
             const productId = req.body.id;
 
             const product = await findProductById(productId!);
-            console.log(`Products was found by product id:${productId}`);
 
             if (!product) {
                 console.log(`Products can't find by product id:${productId}`);
@@ -69,8 +68,10 @@ class ProductController {
                 });
                 return;
             }
+            console.log(`Products was found by product id:${productId}`);
 
             const cart = await insertProductIntoCart(product!, userId!);
+            console.log(`Product id:${productId} was added to cart the cart by user id:${userId}`);
 
             res.status(200).send({
                 data: cart,
