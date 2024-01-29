@@ -56,14 +56,16 @@ export async function updatedProductInCart(cart: CartEntity, cartUpdateDto: Cart
                     if (currentCount <= 0) {
                         cart.products.remove(cart.products.find(item => item.product.id === cartUpdateDto.productId)!);
                         console.log(`Product id:${cartUpdateDto.productId} was deleted from cart id:${cart.id}`);
+                        break;
                     } else {
                         cartItem.count = currentCount;
                         console.log(`Product id:${cartUpdateDto.productId} was reduced in cart id:${cart.id}`);
+                        break;
                     }
                 }
             }
 
-            await DI.cartRepository.upsert(cart); // todo Why doesn't update?
+            await DI.em.persist(cart).flush();
             console.log(`Cart id:${cart.id} was updated by user id:${cart.user.id}`);
 
             return cart;
@@ -72,10 +74,11 @@ export async function updatedProductInCart(cart: CartEntity, cartUpdateDto: Cart
                 if (cartItem.product.id === cartUpdateDto.productId) {
                     cartItem.count += cartUpdateDto.count;
                     console.log(`Product id:${cartUpdateDto.productId} was increased in cart id:${cart.id}`);
+                    break;
                 }
             }
 
-            await DI.cartRepository.upsert(cart); // todo Why doesn't update?
+            await DI.em.persist(cart).flush();
             console.log(`Cart id:${cart.id} was updated by user id:${cart.user.id}`);
 
             return cart;
@@ -116,7 +119,7 @@ export async function insertProductIntoCart(product: ProductEntity, id: string):
 
                 cart.products.add(cartItem);
 
-                await DI.cartRepository.upsert(cart);
+                await DI.em.persist(cart).flush();
             } else {
                 for (let item of cart.products) {
                     if (item.product.id === cartItem.product.id) {
@@ -124,7 +127,7 @@ export async function insertProductIntoCart(product: ProductEntity, id: string):
                     }
                 }
 
-                await DI.cartRepository.upsert(cart); // todo Why doesn't update?
+                await DI.em.persist(cart).flush();
             }
         }
 

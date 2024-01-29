@@ -16,7 +16,7 @@ export class CartEntity extends BaseEntity {
     user!: UserEntity;
 
     @OneToMany(() => CartItemEntity, (item) => item.cart,
-        {eager: true, cascade: [Cascade.ALL]})
+        {eager: true, cascade: [Cascade.ALL], orphanRemoval: true})
     products = new Collection<CartItemEntity>(this);
 
     [EntityRepositoryType] ?: typeof CartRepository;
