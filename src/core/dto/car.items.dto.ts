@@ -4,5 +4,3 @@ export interface CartItemsDto {
     items: Product[];
     total: number;
 }
-
-// todo +

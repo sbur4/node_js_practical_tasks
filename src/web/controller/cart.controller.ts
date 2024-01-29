@@ -4,6 +4,7 @@ import {
     createNewCart,
     deleteCartByUserId,
     findCarByUserId,
+    updatedProductInCart,
     validateReceivedUpdatedCartItem,
 } from "../../core/service/cart.service";
 import {SERVER_ERROR_RESPONSE, USER_ID_HEADER} from "../../core/util/response.util";
@@ -67,6 +68,8 @@ class CartController {
 
             const cart = await findCarByUserId(userId!);
 
+            const product = await findProductById(validatedItem.productId);
+
             if (!cart) {
                 console.log(`User id:${userId} has no cart`);
 
@@ -86,8 +89,6 @@ class CartController {
                     console.warn(`Cart was disabled for the user id:${userId}`);
                     return;
                 }
-
-                const product = findProductById(validatedItem.productId);
 
                 if (!product) {
                     res.status(400).json({
@@ -115,7 +116,7 @@ class CartController {
 
             const updatedCart = await updatedProductInCart(cart!, validatedItem!);
 
-            const cartDto: CartItemsDto = await createCartItemsDto(updatedCart);
+            const cartDto: CartItemsDto = await createCartItemsDto(updatedCart!);
 
             res.status(200).json({
                 data: {cart: cartDto},

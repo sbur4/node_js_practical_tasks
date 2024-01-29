@@ -11,7 +11,6 @@ export function createCartItemsDto(cart: ICartEntity): CartItemsDto {
     const total = calculateTotal(products);
 
     return {
-        id: cart.id,
         items: products,
         total,
     };
