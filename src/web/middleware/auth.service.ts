@@ -9,6 +9,12 @@ export const authenticationCheck: RequestHandler = async (
     next: NextFunction
 ) => {
     {
+
+        const routesWithoutAuth = ['/login', '/register'];
+        if (routesWithoutAuth.includes(req.path)) {
+            return next();
+        }
+
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {

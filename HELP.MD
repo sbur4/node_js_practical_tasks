@@ -108,4 +108,14 @@ npm i bcrypt
 npm i jsonwebtoken
 
 https://jwt.io/
+
+npm i winston
+npm i husky
+npm i @commitlint/config-conventional
+npm i @types/debug
+npm i debug
+npm i morgan
+npm i @types/morgan
+npm i --save-dev @types/jsonwebtoken
+npm i --save-dev @types/bcrypt
 ```
