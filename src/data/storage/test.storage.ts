@@ -5,30 +5,24 @@ import {CartEntity} from "../entity/cart.entity";
 const USER_1 = new UserEntity({
     name: "Boris",
     email: "boris_johnson@com.uk",
-    password:  "53kr37pa$$",
-    // testuser:testpassword
-    // boris_johnson@com.uk:53kr37pa$$
-    // password: '$2a$10$jRxDczmF4bQPSIyhOk5CB.gpo5u0XuqudGbf5tFf7CjC961P25vYC',
+    // password:  "53kr37pa$$",
+    password: "$2b$10$fnRbappCZ2sGr5zoWw39s.6SbWhkbs7nFO72YZxglJ1c57UdxIemi",
     role: USER_ROLE.ADMIN,
 });
 
 const USER_2 = new UserEntity({
     name: "Joe",
     email: "joe_baiden@fbi.usa",
-    password:  "H1dD3nK3Y",
-    // password: bcrypt.hash("H1dD3nK3Y", 10),
-    // joe_baiden@fbi.usa:H1dD3nK3Y
-    // password: '$2a$10$r7vNhB3dCAacLHmXswWZFewEbKvOGszzabvTZsLCLr8QkQcD4BZYm',
+    // password:  "H1dD3nK3Y",
+    password: "$2b$10$K1CVEW/XaoI1hcVFgi.L3eI.TRqNhU23iS1V0o2Cq29qx/gBWCzEy",
     role: USER_ROLE.USER,
 });
 
 const USER_3 = new UserEntity({
     name: "Kate",
     email: "katty_middleton@gb.org",
-    // password: bcrypt.hash("p1NC0d3", 10),
-    // katty_middleton@gb.org:p1NC0d3
-    password:  "p1NC0d3",
-    // password: '$2a$10$bLndG7KTX9217niau58/geyg079j8MvQ.bhzxULfwUaCXPoV64lWG',
+    // password:  "p1NC0d3",
+    password: "$2b$10$cwyI/C2hd2jD/dGTrYZYqe0tZyCprv/zmdJHKmO2zg4jcE2/i3WeW",
     role: USER_ROLE.USER,
 });
 

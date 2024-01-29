@@ -10,7 +10,7 @@ export async function bootstrap(): Promise<Express> {
     await database.connect();
 
     // Uncomment the line below to fill the database only once
-    await fillDatabase();
+    // await fillDatabase();
 
     const app = express();
 

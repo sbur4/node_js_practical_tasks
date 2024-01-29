@@ -9,3 +9,12 @@ export async function findUserById(id: string): Promise<IUserEntity | null> {
         throw new UserNotExistsException(id);
     }
 }
+
+export async function findUserByEmail(email: string): Promise<IUserEntity | null> {
+    try {
+        return await UserEntity.findOne({email: email});
+    } catch (error) {
+        console.error(`User not found by email:${email} `, error);
+        throw new UserNotExistsException(email);
+    }
+}
