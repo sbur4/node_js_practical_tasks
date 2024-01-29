@@ -49,5 +49,3 @@ cartSchema.methods.toJSON = function () {
 }
 
 export const CartEntity = model('Cart', cartSchema);
-
-// cartItemSchema

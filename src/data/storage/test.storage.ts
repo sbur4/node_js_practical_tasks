@@ -89,5 +89,3 @@ export async function fillDatabase() {
     await createProducts();
     await createCart();
 }
-
-// todo +

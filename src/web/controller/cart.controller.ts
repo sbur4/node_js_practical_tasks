@@ -4,7 +4,7 @@ import {addProductToCart, deleteCartByUser, getOrCreateCart, updateCart} from ".
 import {SERVER_ERROR_RESPONSE, USER_ID_HEADER} from "../../core/util/response.util";
 import {CartEntity, ICartEntity} from "../../data/entity/cart.entity";
 import {amountValidator, idValidator} from "../../core/validator/id.validator";
-import {UpdateCartDto} from "../../core/dto/update.cart.dto";
+import {UpdateCartDto} from "../../core/dto/cart.update.dto";
 import {AddProductToCartDto} from "../../core/dto/add.product.to.cart.dto";
 import {findProductById} from "../../core/service/product.service";
 import {IProductEntity} from "../../data/entity/product.entity";

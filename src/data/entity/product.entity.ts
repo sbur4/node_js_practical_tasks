@@ -25,5 +25,3 @@ productSchema.methods.toJSON = function () {
 }
 
 export const ProductEntity = model('Product', productSchema);
-
-// todo +

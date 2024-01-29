@@ -11,7 +11,6 @@ export function createCartItemsDto(cart: ICartEntity): CartItemsDto {
     const total = calculateTotal(products);
 
     return {
-        id: cart.id,
         items: products,
         total,
     };
@@ -20,5 +19,3 @@ export function createCartItemsDto(cart: ICartEntity): CartItemsDto {
 export function calculateTotal(cartItems: Product[]): number {
     return cartItems.reduce((sum, cartItem) => sum + cartItem.product.price * cartItem.count, 0);
 }
-
-// todo +
