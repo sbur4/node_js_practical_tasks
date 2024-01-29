@@ -69,9 +69,9 @@ class UserController {
                  res.status(400).send('All input is required')
             }
 
-            const user:IUserEntity = await UserEntity.findOne({email})
+            const user:IUserEntity | null = await UserEntity.findOne({email})
 
-            if (user && (await bcrypt.compare(password, user.password))) {
+            if (user! && (await bcrypt.compare(password, user!.password))) {
                 const token = jwt.sign(
                     {user_id: user.id, email: email, role: user.role},
                     process.env.TOKEN_KEY!,

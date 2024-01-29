@@ -106,4 +106,6 @@ npm i @types/mongoose
 
 npm i bcrypt
 npm i jsonwebtoken
+
+https://jwt.io/
 ```

@@ -1,20 +1,35 @@
-import {UserEntity} from "../entity/user.entity";
+import {USER_ROLE, UserEntity} from "../entity/user.entity";
 import {ProductEntity} from "../entity/product.entity";
 import {CartEntity} from "../entity/cart.entity";
 
 const USER_1 = new UserEntity({
     name: "Boris",
     email: "boris_johnson@com.uk",
+    password:  "53kr37pa$$",
+    // testuser:testpassword
+    // boris_johnson@com.uk:53kr37pa$$
+    // password: '$2a$10$jRxDczmF4bQPSIyhOk5CB.gpo5u0XuqudGbf5tFf7CjC961P25vYC',
+    role: USER_ROLE.ADMIN,
 });
 
 const USER_2 = new UserEntity({
     name: "Joe",
     email: "joe_baiden@fbi.usa",
+    password:  "H1dD3nK3Y",
+    // password: bcrypt.hash("H1dD3nK3Y", 10),
+    // joe_baiden@fbi.usa:H1dD3nK3Y
+    // password: '$2a$10$r7vNhB3dCAacLHmXswWZFewEbKvOGszzabvTZsLCLr8QkQcD4BZYm',
+    role: USER_ROLE.USER,
 });
 
 const USER_3 = new UserEntity({
     name: "Kate",
     email: "katty_middleton@gb.org",
+    // password: bcrypt.hash("p1NC0d3", 10),
+    // katty_middleton@gb.org:p1NC0d3
+    password:  "p1NC0d3",
+    // password: '$2a$10$bLndG7KTX9217niau58/geyg079j8MvQ.bhzxULfwUaCXPoV64lWG',
+    role: USER_ROLE.USER,
 });
 
 const PRODUCT_1 = new ProductEntity({
