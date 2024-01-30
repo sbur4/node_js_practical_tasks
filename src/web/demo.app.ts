@@ -23,6 +23,7 @@ bootstrap().then((app) => {
 
     const {PORT} = process.env;
     const port = PORT != null || 3000;
+    const httpDebug = debug('app:http');
 
     app.get('/health', (req, res) => {
         res.status(200).json({message: 'OK'})

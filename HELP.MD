@@ -110,12 +110,25 @@ npm i jsonwebtoken
 https://jwt.io/
 
 npm i winston
-npm i husky
-npm i @commitlint/config-conventional
+npm i --save-dev husky
+npm i --save-dev @commitlint/config-conventional
 npm i @types/debug
 npm i debug
 npm i morgan
 npm i @types/morgan
 npm i --save-dev @types/jsonwebtoken
 npm i --save-dev @types/bcrypt
+npm i --save-dev  jest
+npm i --save-dev  @types/jest
+npm i --save-dev  supertest
+npm i --save-dev @types/supertest
+npm install --save-dev ts-jest @types/jest
+
+npm i --save-dev lint-staged
+npm i --save-dev @commitlint/cli
+npm i --save-dev @typescript-eslint/eslint-plugin
+npm i --save-dev @typescript-eslint/parser
+
+npm i --save-dev eslint
+npm init @eslint/config
 ```

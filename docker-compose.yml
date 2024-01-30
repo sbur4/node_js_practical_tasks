@@ -19,7 +19,18 @@ services:
     image: mongo-express
     restart: always
     ports:
-      - 8080:8080
-
-volumes:
-  mongodb_data_container:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root_example
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH_USERNAME: user
+      ME_CONFIG_BASICAUTH_PASSWORD: user_example
+  web:
+    image: demo-node-app
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://root:root_example@mongo:27017/admin
