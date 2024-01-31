@@ -1,5 +1,5 @@
-import winston, {format} from 'winston';
-import morgan from 'morgan';
+import winston, { format } from 'winston'
+import morgan from 'morgan'
 
 const logger = winston.createLogger({
     format: format.combine(
@@ -9,8 +9,8 @@ const logger = winston.createLogger({
             return `${msg.timestamp} [${msg.level}] ${msg.message}`
         })
     ),
-    transports: [new winston.transports.Console({level: 'http'})],
-});
+    transports: [new winston.transports.Console({ level: 'http' })],
+})
 
 if (process.env.NODE_ENV !== 'production') {
     logger.add(
@@ -27,4 +27,4 @@ export const morganMiddleware = morgan(
             write: (message) => logger.http(message.trim()),
         },
     }
-);
+)

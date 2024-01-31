@@ -4,6 +4,6 @@ module.exports = {
   roots: ['./tests'],
   silent: false,
   verbose: true,
-  collectCoverageFrom: ['../src/**'],
+  collectCoverageFrom: ['./src/**'],
   coverageReporters: ['text']
 };

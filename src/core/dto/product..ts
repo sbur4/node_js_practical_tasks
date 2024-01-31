@@ -1,6 +1,6 @@
-import {ProductEntity} from "../../data/entity/product.entity";
+import { ProductEntity } from '../../data/entity/product.entity'
 
 export interface Product {
-    product: ProductEntity;
-    count: number;
+    product: ProductEntity
+    count: number
 }

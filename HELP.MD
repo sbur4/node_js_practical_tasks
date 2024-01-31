@@ -122,7 +122,7 @@ npm i --save-dev  jest
 npm i --save-dev  @types/jest
 npm i --save-dev  supertest
 npm i --save-dev @types/supertest
-npm install --save-dev ts-jest @types/jest
+npm i --save-dev ts-jest @types/jest
 
 npm i --save-dev lint-staged
 npm i --save-dev @commitlint/cli
@@ -131,4 +131,14 @@ npm i --save-dev @typescript-eslint/parser
 
 npm i --save-dev eslint
 npm init @eslint/config
+npm i --save-dev prettier
+npm install eslint-plugin-prettier --save-dev
+npm install eslint-config-prettier --save-dev
+
+docker build .
+docker ps
+docker run image_id => create new every time
+docker stop
+docker run -p -d 3000:8081 image_id(9d574dde90d4e0038e1c09c4d70a66a7febadf74496e04d988e3534f70a30efc) --rm
+docker container purge (del all containers)
 ```

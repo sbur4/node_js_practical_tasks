@@ -12,7 +12,7 @@
         "prettier"
     ],
     "plugins": ["@typescript-eslint"],
-    "ignorePatterns": ["src/**/*.test.ts"],
+    "ignorePatterns": ["tests/*.test.ts"],
     "rules": {
     }
 }

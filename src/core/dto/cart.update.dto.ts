@@ -1,12 +1,12 @@
-import Joi from "joi";
+import Joi from 'joi'
 
 export interface CartUpdateDto {
-    productId: string;
-    count: number;
+    productId: string
+    count: number
 }
 
 export const cartItemSchema = Joi.object({
     productId: Joi.string().required(),
     count: Joi.number().required(),
-    id: Joi.string().optional()
-});
+    id: Joi.string().optional(),
+})
